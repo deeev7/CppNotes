@@ -1,0 +1,433 @@
+//=========================================
+//  1. Class and Object (Student Program)
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class Student {
+public:
+    string name;
+    int roll;
+
+    void input() {
+        cout << "Enter Name: ";
+        cin >> name;
+        cout << "Enter Roll: ";
+        cin >> roll;
+    }
+
+    void display() {
+        cout << "Name: " << name << endl;
+        cout << "Roll: " << roll;
+    }
+};
+
+int main() {
+    Student s;
+    s.input();
+    s.display();
+    return 0;
+}
+
+
+//=========================================
+//  2. Constructor (Default + Parameterized)
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class Demo {
+public:
+    Demo() {
+        cout << "Default Constructor\n";
+    }
+
+    Demo(int x) {
+        cout << "Parameterized Constructor " << x;
+    }
+};
+
+int main() {
+    Demo d1;
+    Demo d2(50);
+    return 0;
+}
+
+
+//=========================================
+//  3. Copy Constructor
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class Test {
+    int a;
+
+public:
+    Test(int x) {
+        a = x;
+    }
+
+    Test(Test &t) {
+        a = t.a;
+    }
+
+    void show() {
+        cout << a;
+    }
+};
+
+int main() {
+    Test t1(10);
+    Test t2 = t1;
+    t2.show();
+    return 0;
+}
+
+
+//=========================================
+//  4. Destructor
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class Demo {
+public:
+    Demo() {
+        cout << "Constructor\n";
+    }
+
+    ~Demo() {
+        cout << "Destructor";
+    }
+};
+
+int main() {
+    Demo d;
+    return 0;
+}
+
+
+//=========================================
+//  5. Function Overloading
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class Sum {
+public:
+    void add(int a, int b) {
+        cout << a + b << endl;
+    }
+
+    void add(float a, float b) {
+        cout << a + b;
+    }
+};
+
+int main() {
+    Sum s;
+    s.add(4, 5);
+    s.add(2.3f, 3.2f);
+    return 0;
+}
+
+
+//=========================================
+//  6. Operator Overloading
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class Demo {
+    int x;
+
+public:
+    Demo(int a) {
+        x = a;
+    }
+
+    Demo operator+(Demo d) {
+        return Demo(x + d.x);
+    }
+
+    void show() {
+        cout << x;
+    }
+};
+
+int main() {
+    Demo d1(5), d2(7);
+    Demo d3 = d1 + d2;
+    d3.show();
+    return 0;
+}
+
+
+//=========================================
+//  7. Single Inheritance
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+    void show() {
+        cout << "Base Class";
+    }
+};
+
+class B : public A {
+};
+
+int main() {
+    B obj;
+    obj.show();
+    return 0;
+}
+
+
+//=========================================
+//  8. Multilevel Inheritance
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+    void display() {
+        cout << "A";
+    }
+};
+
+class B : public A {
+};
+
+class C : public B {
+};
+
+int main() {
+    C obj;
+    obj.display();
+    return 0;
+}
+
+
+//=========================================
+//  9. Multiple Inheritance
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+    void showA() {
+        cout << "A\n";
+    }
+};
+
+class B {
+public:
+    void showB() {
+        cout << "B";
+    }
+};
+
+class C : public A, public B {
+};
+
+int main() {
+    C obj;
+    obj.showA();
+    obj.showB();
+    return 0;
+}
+
+
+//=========================================
+//  10. Virtual Function
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class Base {
+public:
+    virtual void show() {
+        cout << "Base";
+    }
+};
+
+class Derived : public Base {
+public:
+    void show() {
+        cout << "Derived";
+    }
+};
+
+int main() {
+    Base *ptr;
+    Derived d;
+    ptr = &d;
+    ptr->show();
+    return 0;
+}
+
+
+//=========================================
+//  11. Pure Virtual Function
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+    virtual void show() = 0;
+};
+
+class B : public A {
+public:
+    void show() {
+        cout << "Implemented";
+    }
+};
+
+int main() {
+    B obj;
+    obj.show();
+    return 0;
+}
+
+
+//=========================================
+//  12. Exception Handling
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    try {
+        int a = 10, b = 0;
+        if (b == 0)
+            throw b;
+        cout << a / b;
+    } catch (int x) {
+        cout << "Divide by zero error";
+    }
+    return 0;
+}
+
+
+//=========================================
+//  13. File Handling (Write)
+//=========================================
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+    ofstream file("test.txt");
+    file << "Hello";
+    file.close();
+    return 0;
+}
+
+
+//=========================================
+//  14. File Handling (Read)
+//=========================================
+
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+    string data;
+    ifstream file("test.txt");
+    getline(file, data);
+    cout << data;
+    file.close();
+    return 0;
+}
+
+
+//=========================================
+//  15. Friend Function
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class Demo {
+    int x = 10;
+
+    friend void show(Demo);
+};
+
+void show(Demo d) {
+    cout << d.x;
+}
+
+int main() {
+    Demo d;
+    show(d);
+    return 0;
+}
+
+
+//=========================================
+//  16. Inline Function
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+inline int square(int x) {
+    return x * x;
+}
+
+int main() {
+    cout << square(5);
+    return 0;
+}
+
+
+//=========================================
+//  17. Static Data Member
+//=========================================
+
+#include <iostream>
+using namespace std;
+
+class Demo {
+public:
+    static int count;
+
+    Demo() {
+        count++;
+    }
+};
+
+int Demo::count = 0;
+
+int main() {
+    Demo a, b, c;
+    cout << Demo::count;
+    return 0;
+}
+
+
+- Mohit 
