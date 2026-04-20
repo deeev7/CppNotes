@@ -1,16 +1,11 @@
 const express = require("express");
-const fs = require("fs");
-const path = require("path");
+const { router: notesApiRouter, readNotes } = require("./api/notes");
+
 const app = express();
 
 app.disable("etag");
 
 const PORT = Number(process.env.PORT) || 3000;
-const notesPath = path.join(__dirname, "notes.txt");
-
-function readNotes() {
-  return fs.readFileSync(notesPath, "utf-8");
-}
 
 function noStore(res) {
   res.set({
@@ -76,8 +71,6 @@ function sendNotesHtml(req, res) {
   res.type("html").send(html);
 }
 
-// --- Routes (order does not change matching: paths are exact in Express 5) ---
-
 app.get("/", sendNotesHtml);
 app.get("/notes", sendNotesHtml);
 
@@ -86,7 +79,9 @@ app.get("/notes.txt", sendNotesPlain);
 
 app.get("/notes.json", sendNotesJson);
 
-// Mounted router: reliable /api/... handling (same as app.get("/api/notes") but clearer)
+// Plain text API: implementation lives in api/notes.js
+app.use("/api/notes", notesApiRouter);
+
 const api = express.Router();
 api.get("/", (req, res) => {
   noStore(res);
@@ -94,17 +89,17 @@ api.get("/", (req, res) => {
   res.json({
     ok: true,
     endpoints: {
-      jsonNotes: `${req.protocol}://${req.get("host")}/api/notes`,
-      jsonFile: `${req.protocol}://${req.get("host")}/notes.json`,
+      notesPlainText: `${req.protocol}://${req.get("host")}/api/notes`,
+      notesJson: `${req.protocol}://${req.get("host")}/notes.json`,
     },
   });
 });
-api.get("/notes", sendNotesJson);
 app.use("/api", api);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`  Browser: / and /notes (HTML)`);
-  console.log(`  Plain:   /raw and /notes.txt (text/plain)`);
-  console.log(`  JSON:    /api/notes, /notes.json, /api (discovery)`);
+  console.log(`  notes.txt → plain text: GET /api/notes (see api/notes.js)`);
+  console.log(`  Browser HTML: / and /notes`);
+  console.log(`  Plain aliases: /raw, /notes.txt`);
+  console.log(`  JSON: /notes.json, discovery: GET /api`);
 });
